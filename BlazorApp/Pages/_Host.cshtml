@@ -1,0 +1,10 @@
+﻿@page "/"
+@namespace BlazorApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using BlazorApp.Helpers;
+@{
+	CurrentHttpContext hc = new CurrentHttpContext(GlobalObjects.ServiceProvider);
+  Layout = "_Layout";
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />

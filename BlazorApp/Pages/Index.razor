@@ -1,0 +1,33 @@
+﻿@page "/"
+@using BlazorApp.Helpers;
+@using Microsoft.JSInterop;
+@inject IJSRuntime _jSRuntime;
+@inject SessionStorageAccessor _session;
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<button @onclick="setUsername">Set username</button>
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+  private Lazy<IJSObjectReference> _jso = new();
+
+  //
+  protected override async Task OnAfterRenderAsync(bool firstRender) {
+    if (firstRender) {
+      await _jSRuntime.InvokeAsync<IJSObjectReference>("import", "./lib/jquery/dist/jquery.min.js");
+      _jso = new(await _jSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/interop.js"));
+    }
+  }
+
+
+  private async void setUsername() {
+    await _session.SetValueAsync("Username", "Robério Souza");
+    await _session.SetValueAsync("Appname", "BlazorSession");
+    await _session.SetValueAsync("Hora", DateTime.Now.ToString());
+    await _jso.Value.InvokeVoidAsync("sendSessionStorage");
+  }
+}

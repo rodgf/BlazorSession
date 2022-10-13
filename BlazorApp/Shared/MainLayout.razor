@@ -1,0 +1,42 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.Extensions.Logging;
+@inject ILogger<Program> logger;
+
+<PageTitle>BlazorApp</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+      <ErrorBoundary>
+        <ChildContent>
+          @Body
+        </ChildContent>
+        <ErrorContent Context="ex">
+          @*calls custom handler*@
+          @{
+            OnError(@ex);
+          }
+          <div class="alert alert-danger" role="alert">
+            <h3>Falha ao carregar página</h3>
+            <p>@ex.Message</p>
+          </div>
+        </ErrorContent>
+      </ErrorBoundary>
+    </article>
+    </main>
+</div>
+@code {
+  private Lazy<IJSObjectReference> _jso = new();
+
+  protected void OnError(Exception ex) {
+    logger.LogError("=======> Falha ao carregar página : " + ex.Message, ex);
+  }
+}
