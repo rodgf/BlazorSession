@@ -29,5 +29,6 @@ Welcome to your new app.
     await _session.SetValueAsync("Appname", "BlazorSession");
     await _session.SetValueAsync("Hora", DateTime.Now.ToString());
     await _jso.Value.InvokeVoidAsync("sendSessionStorage");
+    await _jso.Value.InvokeVoidAsync("exibeMsg", "Dados enviados.");
   }
 }

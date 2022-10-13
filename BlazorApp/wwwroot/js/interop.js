@@ -15,3 +15,8 @@ export function sendSessionStorage() {
     }
   });
 }
+
+//
+export function exibeMsg(msg) {
+  alert(msg);
+}
